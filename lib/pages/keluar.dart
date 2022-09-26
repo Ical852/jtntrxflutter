@@ -12,13 +12,13 @@ import 'package:jtntrx/widgets/outletbtn.dart';
 import 'package:jtntrx/widgets/outletitemname.dart';
 import 'package:jtntrx/widgets/outletnamedropdown.dart';
 
-class MasukPage extends StatefulWidget {
+class KeluarPage extends StatefulWidget {
 
   @override
-  State<MasukPage> createState() => _MasukPageState();
+  State<KeluarPage> createState() => _KeluarPageState();
 }
 
-class _MasukPageState extends State<MasukPage> {
+class _KeluarPageState extends State<KeluarPage> {
   var currentOutletName = "Nama Outlet";
   var dropdownOpened = false;
   List<String> outletnames = ["Nama Outlet", "Nama Outlet 1", "Nama Outlet 2","Nama Outlet 3","Nama Outlet 4"];
@@ -30,6 +30,8 @@ class _MasukPageState extends State<MasukPage> {
   var moneyTypeOpen = false;
   List<String> moneynames = ["IDR", "USD","EUR","SGD"];
   TextEditingController currencyController = TextEditingController(text: "");
+
+  TextEditingController judulController = TextEditingController(text: "");
 
   TextEditingController ketaranganController = TextEditingController(text: "");
 
@@ -74,6 +76,12 @@ class _MasukPageState extends State<MasukPage> {
                 }
               },
               controller: dateController,
+            ),
+            SizedBox(height: 13,),
+            InputNormal(
+              controller: judulController, 
+              title: "Judul", 
+              hint: "masukkan judul..."
             ),
             SizedBox(height: 13,),
             InputCurrencyCustomed(
@@ -143,7 +151,7 @@ class _MasukPageState extends State<MasukPage> {
           child: Stack(
             children: [
               Header(
-                title: "Masuk",
+                title: "Keluar",
                 onBackPress: (){
                   Navigator.pop(context);
                 },
@@ -210,7 +218,7 @@ class _MasukPageState extends State<MasukPage> {
                 ),
               ) : SizedBox(),
               moneyTypeOpen ? Container(
-                margin: EdgeInsets.only(top: 220, left: 10, right: 10),
+                margin: EdgeInsets.only(top: 277, left: 10, right: 10),
                 child: InputCurrencyCustomed(
                   onTap: () {
                     this.setState(() {
@@ -228,7 +236,7 @@ class _MasukPageState extends State<MasukPage> {
                 children: [
                   Container(
                     margin: EdgeInsets.only(
-                      top: 268,
+                      top: 325,
                       right: 11
                     ),
                     child: moneyDropdown(),

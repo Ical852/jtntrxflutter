@@ -12,16 +12,20 @@ import 'package:jtntrx/widgets/outletbtn.dart';
 import 'package:jtntrx/widgets/outletitemname.dart';
 import 'package:jtntrx/widgets/outletnamedropdown.dart';
 
-class MasukPage extends StatefulWidget {
+class PindahPage extends StatefulWidget {
 
   @override
-  State<MasukPage> createState() => _MasukPageState();
+  State<PindahPage> createState() => _PindahPageState();
 }
 
-class _MasukPageState extends State<MasukPage> {
+class _PindahPageState extends State<PindahPage> {
   var currentOutletName = "Nama Outlet";
   var dropdownOpened = false;
   List<String> outletnames = ["Nama Outlet", "Nama Outlet 1", "Nama Outlet 2","Nama Outlet 3","Nama Outlet 4"];
+
+  var currentOutletName2 = "Nama Outlet";
+  var dropdownOpened2 = false;
+  List<String> outletnames2 = ["Nama Outlet", "Nama Outlet 1", "Nama Outlet 2","Nama Outlet 3","Nama Outlet 4"];
 
   var currentDate = DateTime.now();
   TextEditingController dateController = TextEditingController(text: "");
@@ -32,7 +36,7 @@ class _MasukPageState extends State<MasukPage> {
   TextEditingController currencyController = TextEditingController(text: "");
 
   TextEditingController ketaranganController = TextEditingController(text: "");
-
+  
   @override
   Widget build(BuildContext context) {
     Widget contentBg() {
@@ -119,6 +123,23 @@ class _MasukPageState extends State<MasukPage> {
       );
     }
 
+    Widget dropdown2() {
+      return OutletNameDropwdown(
+        child: Column(
+          children: outletnames.map((item) => OutletItemName(
+            title: item,
+            onPress: () {
+              this.setState(() {
+                dropdownOpened2 = !dropdownOpened2;
+                currentOutletName2 = item;
+              });
+            },
+          ),
+        ).toList()
+        ),
+      );
+    }
+
     Widget moneyDropdown() {
       return InputMoneyDropdown(
         child: Column(
@@ -143,7 +164,7 @@ class _MasukPageState extends State<MasukPage> {
           child: Stack(
             children: [
               Header(
-                title: "Masuk",
+                title: "Pindah",
                 onBackPress: (){
                   Navigator.pop(context);
                 },
@@ -171,31 +192,95 @@ class _MasukPageState extends State<MasukPage> {
                   color: black.withOpacity(0.5),
                 ),
               ) : SizedBox(),
+              dropdownOpened2 ? GestureDetector(
+                onTap: (){
+                  this.setState(() {
+                    dropdownOpened2 = !dropdownOpened2;
+                  });
+                },
+                child: Container(
+                  color: black.withOpacity(0.5),
+                ),
+              ) : SizedBox(),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
-                    margin: EdgeInsets.only(top: 85), 
-                    child: OutletBtn(
-                      title: currentOutletName,
-                      opened: dropdownOpened,
-                      onPress: (){
-                        this.setState(() {
-                          dropdownOpened = !dropdownOpened;
-                        });
-                      },
+                    margin: EdgeInsets.only(top: 73, left: 41), 
+                    child: Column(
+                      children: [
+                        Text(
+                          "Dari",
+                          style: robototext.copyWith(
+                              fontSize: 8,
+                              fontWeight: bold,
+                              color: primaryColor),
+                        ),
+                        SizedBox(height: 3,),
+                        OutletBtn(
+                          title: currentOutletName,
+                          opened: dropdownOpened,
+                          onPress: (){
+                            this.setState(() {
+                              dropdownOpened = !dropdownOpened;
+                            });
+                          },
+                        ),
+                      ],
+                    )
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 73, right: 41), 
+                    child: Column(
+                      children: [
+                        Text(
+                          "Ke",
+                          style: robototext.copyWith(
+                              fontSize: 8,
+                              fontWeight: bold,
+                              color: primaryColor),
+                        ),
+                        SizedBox(height: 3,),
+                        OutletBtn(
+                          title: currentOutletName2,
+                          opened: dropdownOpened2,
+                          onPress: (){
+                            this.setState(() {
+                              dropdownOpened2 = !dropdownOpened2;
+                            });
+                          },
+                        ),
+                      ],
                     )
                   ),
                 ],
               ),
               dropdownOpened ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Container(
                     margin: EdgeInsets.only(
-                      top: 125
+                      top: 125,
+                      left: 41
                     ),
                     child: dropdown()
+                  ),
+                ], 
+              ) : Container(),
+              dropdownOpened2 ? Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 125,
+                      right: 41
+                    ),
+                    child: dropdown2()
                   ),
                 ], 
               ) : Container(),

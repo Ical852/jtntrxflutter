@@ -3,35 +3,32 @@ import 'package:jtntrx/shared/theme.dart';
 import 'package:jtntrx/widgets/btnsubmit.dart';
 import 'package:jtntrx/widgets/header.dart';
 import 'package:jtntrx/widgets/inputcurrency.dart';
-import 'package:jtntrx/widgets/inputcustomed.dart';
 import 'package:jtntrx/widgets/inputmoneydropdown.dart';
-import 'package:jtntrx/widgets/inputnormal.dart';
-import 'package:jtntrx/widgets/inputphoto.dart';
 import 'package:jtntrx/widgets/moneydropdownitem.dart';
 import 'package:jtntrx/widgets/outletbtn.dart';
 import 'package:jtntrx/widgets/outletitemname.dart';
 import 'package:jtntrx/widgets/outletnamedropdown.dart';
 
-class MasukPage extends StatefulWidget {
+class KursPage extends StatefulWidget {
 
   @override
-  State<MasukPage> createState() => _MasukPageState();
+  State<KursPage> createState() => _KursPageState();
 }
 
-class _MasukPageState extends State<MasukPage> {
+class _KursPageState extends State<KursPage> {
   var currentOutletName = "Nama Outlet";
   var dropdownOpened = false;
   List<String> outletnames = ["Nama Outlet", "Nama Outlet 1", "Nama Outlet 2","Nama Outlet 3","Nama Outlet 4"];
-
-  var currentDate = DateTime.now();
-  TextEditingController dateController = TextEditingController(text: "");
 
   var moneyType = "IDR";
   var moneyTypeOpen = false;
   List<String> moneynames = ["IDR", "USD","EUR","SGD"];
   TextEditingController currencyController = TextEditingController(text: "");
 
-  TextEditingController ketaranganController = TextEditingController(text: "");
+  var moneyType2 = "IDR";
+  var moneyTypeOpen2 = false;
+  List<String> moneynames2 = ["IDR", "USD", "EUR", "SGD"];
+  TextEditingController currencyController2 = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -54,26 +51,16 @@ class _MasukPageState extends State<MasukPage> {
         ),
         child: Column(
           children: [
-            InputDateCustomed(
-              title: "Start Date",
-              hint: "masukkan start date...",
-              onTap: () async {
-                DateTime? newDate = await showDatePicker(
-                  context: context, 
-                  initialDate: currentDate, 
-                  firstDate: DateTime(1900), 
-                  lastDate: DateTime(2100)
-                );
-                if (newDate == null) {
-                  return;
-                } else {
-                  this.setState(() {
-                    currentDate = newDate;
-                  });
-                  dateController.text = newDate.toString();
-                }
+            InputCurrencyCustomed(
+              onTap: () {
+                this.setState(() {
+                  moneyTypeOpen2 = !moneyTypeOpen2;
+                });
               },
-              controller: dateController,
+              controller: currencyController2,
+              title: "Dari",
+              hint: 0.toString(),
+              moneyType: moneyType2,
             ),
             SizedBox(height: 13,),
             InputCurrencyCustomed(
@@ -83,20 +70,10 @@ class _MasukPageState extends State<MasukPage> {
                 });
               }, 
               controller: currencyController, 
-              title: "Input", 
+              title: "Ke", 
               hint: 0.toString(),
               moneyType: moneyType,
             ),
-            SizedBox(height: 13,),
-            InputPhotoCustomed(
-              title: "Photo",
-            ),
-            SizedBox(height: 13,),
-            InputNormal(
-              controller: ketaranganController, 
-              title: "Keterangan", 
-              hint: "masukkan keterangan..."
-            )
           ],
         ),
       );
@@ -136,6 +113,23 @@ class _MasukPageState extends State<MasukPage> {
       );
     }
 
+    Widget moneyDropdown2() {
+      return InputMoneyDropdown(
+        child: Column(
+          children: moneynames.map((e) => MoneyDropdownItem(
+            type: e,
+            onPress: () {
+              this.setState(() {
+                moneyTypeOpen = !moneyTypeOpen;
+                moneyType = e;
+              });
+            },
+          ))
+          .toList(),
+        ),
+      );
+    }
+
     return Scaffold(
       backgroundColor: white,
       body: SafeArea(
@@ -143,7 +137,7 @@ class _MasukPageState extends State<MasukPage> {
           child: Stack(
             children: [
               Header(
-                title: "Masuk",
+                title: "Pindah Kurs",
                 onBackPress: (){
                   Navigator.pop(context);
                 },
@@ -209,6 +203,16 @@ class _MasukPageState extends State<MasukPage> {
                   color: black.withOpacity(0.5),
                 ),
               ) : SizedBox(),
+              moneyTypeOpen2 ? GestureDetector(
+                onTap: (){
+                  this.setState(() {
+                    moneyTypeOpen2 = !moneyTypeOpen2;
+                  });
+                },
+                child: Container(
+                  color: black.withOpacity(0.5),
+                ),
+              ) : SizedBox(),
               moneyTypeOpen ? Container(
                 margin: EdgeInsets.only(top: 220, left: 10, right: 10),
                 child: InputCurrencyCustomed(
@@ -218,9 +222,23 @@ class _MasukPageState extends State<MasukPage> {
                     });
                   },
                   controller: currencyController,
-                  title: "Input",
+                  title: "Ke",
                   hint: 0.toString(),
                   moneyType: moneyType,
+                ),
+              ) : Container(),
+              moneyTypeOpen2 ? Container(
+                margin: EdgeInsets.only(top: 163, left: 10, right: 10),
+                child: InputCurrencyCustomed(
+                  onTap: () {
+                    this.setState(() {
+                      moneyTypeOpen2 = !moneyTypeOpen2;
+                    });
+                  },
+                  controller: currencyController2,
+                  title: "Dari",
+                  hint: 0.toString(),
+                  moneyType: moneyType2,
                 ),
               ) : Container(),
               moneyTypeOpen ? Row(
@@ -232,6 +250,18 @@ class _MasukPageState extends State<MasukPage> {
                       right: 11
                     ),
                     child: moneyDropdown(),
+                  ),
+                ],
+              ) : Container(),
+              moneyTypeOpen2 ? Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 211,
+                      right: 11
+                    ),
+                    child: moneyDropdown2(),
                   ),
                 ],
               ) : Container(),

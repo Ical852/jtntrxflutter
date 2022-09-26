@@ -43,7 +43,11 @@ class InputCurrencyCustomed extends StatelessWidget {
           height: 30,
           decoration: BoxDecoration(
             color: white,
-            borderRadius: BorderRadius.circular(10)
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: black.withOpacity(0.3), blurRadius: 4, offset: Offset(0, 3))
+            ]
           ),
           child: Row(
             children: [
@@ -51,7 +55,6 @@ class InputCurrencyCustomed extends StatelessWidget {
                 child: TextFormField(
                   keyboardType: TextInputType.number,
                   controller: controller,
-                  onTap: onTap,
                   textAlign: TextAlign.right,
                   style: robototext.copyWith(
                     fontSize: 12,

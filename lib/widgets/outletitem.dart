@@ -2,7 +2,11 @@ import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:jtntrx/models/outletmoneymodel.dart';
+import 'package:jtntrx/pages/keluar.dart';
+import 'package:jtntrx/pages/kurs.dart';
 import 'package:jtntrx/pages/masuk.dart';
+import 'package:jtntrx/pages/mutasi.dart';
+import 'package:jtntrx/pages/pindah.dart';
 import 'package:jtntrx/shared/theme.dart';
 import 'package:jtntrx/widgets/outletfuncitem.dart';
 import 'package:jtntrx/widgets/outletmoney.dart';
@@ -105,10 +109,34 @@ class OutletItem extends StatelessWidget {
                           )
                         );
                       },),
-                      OutletFuncItem(title: "KELUAR", onPress: (){},),
-                      OutletFuncItem(title: "PINDAH", onPress: (){},),
-                      OutletFuncItem(title: "MUTASI", onPress: (){},),
-                      OutletFuncItem(title: "KURS", onPress: (){},),
+                      OutletFuncItem(title: "KELUAR", onPress: (){
+                        Navigator.push(
+                          context, MaterialPageRoute(
+                            builder: (context) => KeluarPage()
+                          )
+                        );
+                      },),
+                      OutletFuncItem(title: "PINDAH", onPress: (){
+                        Navigator.push(
+                          context, MaterialPageRoute(
+                            builder: (context) => PindahPage()
+                          )
+                        );
+                      },),
+                      OutletFuncItem(title: "MUTASI", onPress: (){
+                        Navigator.push(
+                          context, MaterialPageRoute(
+                            builder: (context) => MutasiPage()
+                          )
+                        );
+                      },),
+                      OutletFuncItem(title: "KURS", onPress: (){
+                        Navigator.push(
+                          context, MaterialPageRoute(
+                            builder: (context) => KursPage()
+                          )
+                        );
+                      },),
                     ],
                   ),
                 ),

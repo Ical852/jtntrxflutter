@@ -25,7 +25,11 @@ class InputDateCustomed extends StatelessWidget {
           height: 30,
           decoration: BoxDecoration(
             color: white,
-            borderRadius: BorderRadius.circular(10)
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: black.withOpacity(0.3), blurRadius: 4, offset: Offset(0, 3))
+            ]
           ),
           child: Center(
             child: TextFormField(
