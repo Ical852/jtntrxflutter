@@ -2,11 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:jtntrx/shared/theme.dart';
 
 class OutletBtnJenisLaporan extends StatelessWidget {
-  String date1, date2;
+  String date1, date2, title;
   Function() onPress;
   bool opened;
 
-  OutletBtnJenisLaporan({required this.date1, required this.date2, required this.onPress, this.opened = false});
+  OutletBtnJenisLaporan({
+    required this.date1, 
+    required this.date2, 
+    required this.onPress, 
+    this.opened = false,
+    required this.title
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +34,7 @@ class OutletBtnJenisLaporan extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Jenis Laporan ",
+                title + "   ",
                 style: robototext.copyWith(
                   fontSize: 12,
                   fontWeight: bold,

@@ -3,8 +3,9 @@ import 'package:jtntrx/shared/theme.dart';
 
 class BtnSubmit extends StatelessWidget {
   Function() onPress;
+  bool secondary;
 
-  BtnSubmit({required this.onPress});
+  BtnSubmit({required this.onPress, this.secondary = false});
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +15,7 @@ class BtnSubmit extends StatelessWidget {
         width: 111,
         height: 30,
         decoration: BoxDecoration(
-          color: secondaryColor,
+          color: secondary ? primaryColor : secondaryColor,
           borderRadius: BorderRadius.circular(10)
         ),
         child: Center(
@@ -23,7 +24,7 @@ class BtnSubmit extends StatelessWidget {
             style: robototext.copyWith(
               fontSize: 12,
               fontWeight: bold,
-              color: primaryColor
+              color: secondary ? white : primaryColor
             ),
           ),
         ),

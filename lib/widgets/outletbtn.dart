@@ -5,18 +5,22 @@ class OutletBtn extends StatelessWidget {
   String title;
   Function() onPress;
   bool opened;
+  bool secondary;
 
-  OutletBtn({required this.title, required this.onPress, this.opened = false});
+  OutletBtn({required this.title, required this.onPress, this.opened = false, this.secondary = false});
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPress,
       child: Container(
-        width: 108,
+        padding: EdgeInsets.symmetric(
+          vertical: 8,
+          horizontal: 13
+        ),
         height: 30,
         decoration: BoxDecoration(
-          color: secondaryColor,
+          color: secondary ? white : secondaryColor,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(

@@ -4,6 +4,7 @@ import 'package:jtntrx/widgets/btnsubmit.dart';
 import 'package:jtntrx/widgets/header.dart';
 import 'package:jtntrx/widgets/inputcurrency.dart';
 import 'package:jtntrx/widgets/inputmoneydropdown.dart';
+import 'package:jtntrx/widgets/miniinputdate.dart';
 import 'package:jtntrx/widgets/moneydropdownitem.dart';
 import 'package:jtntrx/widgets/outletbtn.dart';
 import 'package:jtntrx/widgets/outletbtnjenislaporan.dart';
@@ -25,6 +26,10 @@ class _MutasiPageState extends State<MutasiPage> {
   var dropdownJL = false;
   var date1 = DateTime.now();
 
+  var currentJenisLaporan = "Jenis Laporan";
+  var openJenisLaporan = false;
+  List<String> Jlames = ["Jenis Laporan", "Jenis Laporan 1", "Jenis Laporan 2","Jenis Laporan 3","Jenis Laporan 4"];
+
   var moneyType = "IDR";
   var moneyTypeOpen = false;
   List<String> moneynames = ["IDR", "USD","EUR","SGD"];
@@ -34,6 +39,12 @@ class _MutasiPageState extends State<MutasiPage> {
   var moneyTypeOpen2 = false;
   List<String> moneynames2 = ["IDR", "USD", "EUR", "SGD"];
   TextEditingController currencyController2 = TextEditingController(text: "");
+
+  var currentDate1 = DateTime.now();
+  TextEditingController dateController1 = TextEditingController(text: "");
+
+  var currentDate2 = DateTime.now();
+  TextEditingController dateController2 = TextEditingController(text: "");
 
   @override
   Widget build(BuildContext context) {
@@ -101,19 +112,110 @@ class _MutasiPageState extends State<MutasiPage> {
       );
     }
 
-    Widget dropdownjl() {
-      return OutletFilterDropDown(
+    Widget jlitemDropDown() {
+      return OutletNameDropwdown(
         child: Column(
-          children: outletnames.map((item) => OutletItemName(
+          children: Jlames.map((item) => OutletItemName(
             title: item,
             onPress: () {
               this.setState(() {
-                dropdownOpened = !dropdownOpened;
-                currentOutletName = item;
+                openJenisLaporan = !openJenisLaporan;
+                currentJenisLaporan = item;
               });
             },
           ),
         ).toList()
+        ),
+      );
+    }
+
+    Widget dropdownjl() {
+      return OutletFilterDropDown(
+        child: Column(
+          children: [
+            Text(
+              "Filter",
+              style: robototext.copyWith(
+                fontSize: 12,
+                fontWeight: bold,
+                color: primaryColor
+              ),
+            ),
+            SizedBox(height: 18,),
+            FittedBox(
+              child: OutletBtn(
+                title: currentJenisLaporan, 
+                onPress: (){
+                  this.setState(() {
+                    openJenisLaporan = !openJenisLaporan;
+                  });
+                },
+                secondary: true,
+                opened: openJenisLaporan,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(
+                top: 15
+              ),
+              child: Row(
+                children: [
+                  Flexible(
+                    child: MiniInputDate(
+                      onTap: () async {
+                        DateTime? newDate = await showDatePicker(
+                            context: context,
+                            initialDate: currentDate1,
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2100));
+                        if (newDate == null) {
+                          return;
+                        } else {
+                          this.setState(() {
+                            currentDate1 = newDate;
+                          });
+                          dateController1.text = newDate.day.toString()+"/"+newDate.month.toString()+"/"+newDate.year.toString();
+                        }
+                      },
+                      controller: dateController1, 
+                      title: "Start Date", 
+                      hint: currentDate1.day.toString()+"/"+currentDate1.month.toString()+"/"+currentDate1.year.toString()
+                    ),
+                  ),
+                  Container(
+                    width: 42,
+                  ),
+                  Flexible(
+                    child: MiniInputDate(
+                      onTap: () async {
+                        DateTime? newDate = await showDatePicker(
+                            context: context,
+                            initialDate: currentDate2,
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime(2100));
+                        if (newDate == null) {
+                          return;
+                        } else {
+                          this.setState(() {
+                            currentDate2 = newDate;
+                          });
+                          dateController2.text = newDate.day.toString()+"/"+newDate.month.toString()+"/"+newDate.year.toString();
+                        }
+                      },
+                      controller: dateController2, 
+                      title: "To Date", 
+                      hint: currentDate2.day.toString()+"/"+currentDate2.month.toString()+"/"+currentDate2.year.toString()
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 27,),
+            BtnSubmit(
+              onPress: (){},
+              secondary: true,
+            )
+          ]
         ),
       );
     }
@@ -204,22 +306,11 @@ class _MutasiPageState extends State<MutasiPage> {
                   ),
                 ],
               ),
-              
-              dropdownOpened ? Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 125
-                    ),
-                    child: dropdown()
-                  ),
-                ], 
-              ) : Container(),
               dropdownJL ? GestureDetector(
                 onTap: (){
                   this.setState(() {
                     dropdownJL = !dropdownJL;
+                    openJenisLaporan = false;
                   });
                 },
                 child: Container(
@@ -231,15 +322,26 @@ class _MutasiPageState extends State<MutasiPage> {
                 children: [
                   Container(
                     margin: EdgeInsets.only(top: 133), 
-                    child: OutletBtnJenisLaporan(
-                      date1: currentOutletName,
-                      date2: currentOutletName,
-                      opened: dropdownJL,
-                      onPress: (){
-                        this.setState(() {
-                          dropdownJL = !dropdownJL;
-                        });
-                      },
+                    child: Opacity(
+                      opacity: dropdownOpened ? 0.5 : 1,
+                      child: OutletBtnJenisLaporan(
+                        title: currentJenisLaporan,
+                        date1: currentDate1.day.toString()+"/"+currentDate1.month.toString()+"/"+currentDate1.year.toString(),
+                        date2: currentDate2.day.toString()+"/"+currentDate2.month.toString()+"/"+currentDate2.year.toString(),
+                        opened: dropdownJL,
+                        onPress: (){
+                          if (dropdownOpened) {
+                            this.setState(() {
+                              dropdownOpened = false;
+                            });
+                          } else {
+                            this.setState(() {
+                              dropdownJL = !dropdownJL;
+                            });
+                          }
+                          openJenisLaporan = false;
+                        },
+                      ),
                     )
                   ),
                 ],
@@ -252,6 +354,17 @@ class _MutasiPageState extends State<MutasiPage> {
                       top: 173
                     ),
                     child: dropdownjl(),
+                  ),
+                ], 
+              ) : Container(),
+              dropdownOpened ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 125
+                    ),
+                    child: dropdown()
                   ),
                 ], 
               ) : Container(),
@@ -326,6 +439,17 @@ class _MutasiPageState extends State<MutasiPage> {
                     child: moneyDropdown2(),
                   ),
                 ],
+              ) : Container(),
+              openJenisLaporan ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(
+                      top: 260
+                    ),
+                    child: jlitemDropDown()
+                  ),
+                ], 
               ) : Container(),
             ],
           ),

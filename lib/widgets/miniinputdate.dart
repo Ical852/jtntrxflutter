@@ -1,0 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:jtntrx/shared/theme.dart';
+
+class MiniInputDate extends StatelessWidget {
+  Function() onTap;
+  TextEditingController controller;
+  String title, hint;
+
+  MiniInputDate({required this.onTap, required this.controller, required this.title, required this.hint});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          title,
+          style: robototext.copyWith(
+            fontSize: 8,
+            fontWeight: bold,
+            color: primaryColor
+          ),
+        ),
+        SizedBox(height:5 ,),
+        Container(
+          height: 30,
+          decoration: BoxDecoration(
+            color: secondaryColor,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: black.withOpacity(0.3), blurRadius: 4, offset: Offset(0, 3))
+            ]
+          ),
+          child: Center(
+            child: TextFormField(
+              keyboardType: TextInputType.datetime,
+              controller: controller,
+              onTap: onTap,
+              textAlign: TextAlign.center,
+              style: robototext.copyWith(
+                fontSize: 12,
+                color: primaryColor,
+                fontWeight: bold
+              ),
+              decoration: InputDecoration.collapsed(
+                hintText: hint,
+                hintStyle: robototext.copyWith(
+                  fontSize: 12,
+                  color: primaryColor,
+                  fontWeight: light
+                ),
+              )
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
