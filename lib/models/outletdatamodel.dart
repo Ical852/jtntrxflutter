@@ -7,6 +7,8 @@ import 'package:jtntrx/models/outletmodels/paytipemodel.dart';
 import 'package:jtntrx/models/outletmodels/trxtipemode.dart';
 
 class OutletDataModel {
+  OutletDataModel(){}
+
   OutletModel outlet;
   List<OutletSubsModel> outlet_subs;
   List<TrxTipeModel> trx_tipe;

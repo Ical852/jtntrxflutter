@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jtntrx/models/outletdatamodel.dart';
+import 'package:jtntrx/models/outletmodels/outletsubsmode.dart';
 import 'package:jtntrx/shared/theme.dart';
 import 'package:jtntrx/widgets/btnsubmit.dart';
 import 'package:jtntrx/widgets/header.dart';
@@ -13,6 +15,8 @@ import 'package:jtntrx/widgets/outletitemname.dart';
 import 'package:jtntrx/widgets/outletnamedropdown.dart';
 
 class KeluarPage extends StatefulWidget {
+  OutletDataModel outletDataModel;
+  KeluarPage(this.outletDataModel);
 
   @override
   State<KeluarPage> createState() => _KeluarPageState();
@@ -20,8 +24,8 @@ class KeluarPage extends StatefulWidget {
 
 class _KeluarPageState extends State<KeluarPage> {
   var currentOutletName = "Nama Outlet";
+  var currentOutletId = "";
   var dropdownOpened = false;
-  List<String> outletnames = ["Nama Outlet", "Nama Outlet 1", "Nama Outlet 2","Nama Outlet 3","Nama Outlet 4"];
 
   var currentDate = DateTime.now();
   TextEditingController dateController = TextEditingController(text: "");
@@ -37,6 +41,8 @@ class _KeluarPageState extends State<KeluarPage> {
 
   @override
   Widget build(BuildContext context) {
+  List<OutletSubsModel> outletnames = this.widget.outletDataModel.outlet_subs;
+
     Widget contentBg() {
       return Container(
         margin: EdgeInsets.only(
@@ -114,11 +120,12 @@ class _KeluarPageState extends State<KeluarPage> {
       return OutletNameDropwdown(
         child: Column(
           children: outletnames.map((item) => OutletItemName(
-            title: item,
+            title: item.outletName,
             onPress: () {
               this.setState(() {
                 dropdownOpened = !dropdownOpened;
-                currentOutletName = item;
+                currentOutletName = item.outletName;
+                currentOutletId = item.id;
               });
             },
           ),

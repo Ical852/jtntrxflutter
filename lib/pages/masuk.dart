@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jtntrx/models/outletdatamodel.dart';
+import 'package:jtntrx/models/outletmodels/outletsubsmode.dart';
 import 'package:jtntrx/shared/theme.dart';
 import 'package:jtntrx/widgets/btnsubmit.dart';
 import 'package:jtntrx/widgets/header.dart';
@@ -13,15 +15,17 @@ import 'package:jtntrx/widgets/outletitemname.dart';
 import 'package:jtntrx/widgets/outletnamedropdown.dart';
 
 class MasukPage extends StatefulWidget {
+  OutletDataModel outletDataModel;
+  MasukPage(this.outletDataModel);
 
   @override
   State<MasukPage> createState() => _MasukPageState();
 }
 
 class _MasukPageState extends State<MasukPage> {
-  var currentOutletName = "Nama Outlet";
   var dropdownOpened = false;
-  List<String> outletnames = ["Nama Outlet", "Nama Outlet 1", "Nama Outlet 2","Nama Outlet 3","Nama Outlet 4"];
+  var currentOutletName = "Outlet Name";
+  var currentOutletId = "";
 
   var currentDate = DateTime.now();
   TextEditingController dateController = TextEditingController(text: "");
@@ -35,6 +39,8 @@ class _MasukPageState extends State<MasukPage> {
 
   @override
   Widget build(BuildContext context) {
+  List<OutletSubsModel> outletnames = this.widget.outletDataModel.outlet_subs;
+    
     Widget contentBg() {
       return Container(
         margin: EdgeInsets.only(
@@ -106,11 +112,13 @@ class _MasukPageState extends State<MasukPage> {
       return OutletNameDropwdown(
         child: Column(
           children: outletnames.map((item) => OutletItemName(
-            title: item,
+            title: item.outletName,
             onPress: () {
+              print(item.outletName);
               this.setState(() {
                 dropdownOpened = !dropdownOpened;
-                currentOutletName = item;
+                currentOutletName = item.outletName;
+                currentOutletId = item.id;
               });
             },
           ),

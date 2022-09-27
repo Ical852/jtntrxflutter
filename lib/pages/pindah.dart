@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:jtntrx/models/outletdatamodel.dart';
+import 'package:jtntrx/models/outletmodels/outletsubsmode.dart';
 import 'package:jtntrx/shared/theme.dart';
 import 'package:jtntrx/widgets/btnsubmit.dart';
 import 'package:jtntrx/widgets/header.dart';
@@ -13,6 +15,8 @@ import 'package:jtntrx/widgets/outletitemname.dart';
 import 'package:jtntrx/widgets/outletnamedropdown.dart';
 
 class PindahPage extends StatefulWidget {
+  OutletDataModel outletDataModel;
+  PindahPage(this.outletDataModel);
 
   @override
   State<PindahPage> createState() => _PindahPageState();
@@ -20,12 +24,12 @@ class PindahPage extends StatefulWidget {
 
 class _PindahPageState extends State<PindahPage> {
   var currentOutletName = "Nama Outlet";
+  var currentOutletId = "";
   var dropdownOpened = false;
-  List<String> outletnames = ["Nama Outlet", "Nama Outlet 1", "Nama Outlet 2","Nama Outlet 3","Nama Outlet 4"];
 
   var currentOutletName2 = "Nama Outlet";
+  var currentOutletId2 = "";
   var dropdownOpened2 = false;
-  List<String> outletnames2 = ["Nama Outlet", "Nama Outlet 1", "Nama Outlet 2","Nama Outlet 3","Nama Outlet 4"];
 
   var currentDate = DateTime.now();
   TextEditingController dateController = TextEditingController(text: "");
@@ -39,6 +43,9 @@ class _PindahPageState extends State<PindahPage> {
   
   @override
   Widget build(BuildContext context) {
+    List<OutletSubsModel> outletnames = this.widget.outletDataModel.outlet_subs;
+    List<OutletSubsModel> outletnames2 = this.widget.outletDataModel.outlet_subs;
+
     Widget contentBg() {
       return Container(
         margin: EdgeInsets.only(
@@ -110,11 +117,12 @@ class _PindahPageState extends State<PindahPage> {
       return OutletNameDropwdown(
         child: Column(
           children: outletnames.map((item) => OutletItemName(
-            title: item,
+            title: item.outletName,
             onPress: () {
               this.setState(() {
                 dropdownOpened = !dropdownOpened;
-                currentOutletName = item;
+                currentOutletName = item.outletName;
+                currentOutletId = item.id;
               });
             },
           ),
@@ -127,11 +135,12 @@ class _PindahPageState extends State<PindahPage> {
       return OutletNameDropwdown(
         child: Column(
           children: outletnames.map((item) => OutletItemName(
-            title: item,
+            title: item.outletName,
             onPress: () {
               this.setState(() {
                 dropdownOpened2 = !dropdownOpened2;
-                currentOutletName2 = item;
+                currentOutletName2 = item.outletName;
+                currentOutletId2 = item.id;
               });
             },
           ),

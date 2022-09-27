@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:jtntrx/models/outletdatamodel.dart';
 import 'package:jtntrx/models/outletmoneymodel.dart';
 import 'package:jtntrx/pages/keluar.dart';
 import 'package:jtntrx/pages/kurs.dart';
@@ -18,13 +19,15 @@ class OutletItem extends StatelessWidget {
   bool open;
   Function() onPress;
   int jumlahbarang;
+  OutletDataModel outletDataModel;
 
   OutletItem({
     required this.title, 
     required this.prices, 
     this.open = false, 
     required this.onPress,
-    required this.jumlahbarang
+    required this.jumlahbarang,
+    required this.outletDataModel,
   });
 
   @override
@@ -105,35 +108,35 @@ class OutletItem extends StatelessWidget {
                       OutletFuncItem(title: "MASUK", onPress: (){
                         Navigator.push(
                           context, MaterialPageRoute(
-                            builder: (context) => MasukPage()
+                            builder: (context) => MasukPage(outletDataModel)
                           )
                         );
                       },),
                       OutletFuncItem(title: "KELUAR", onPress: (){
                         Navigator.push(
                           context, MaterialPageRoute(
-                            builder: (context) => KeluarPage()
+                            builder: (context) => KeluarPage(outletDataModel)
                           )
                         );
                       },),
                       OutletFuncItem(title: "PINDAH", onPress: (){
                         Navigator.push(
                           context, MaterialPageRoute(
-                            builder: (context) => PindahPage()
+                            builder: (context) => PindahPage(outletDataModel)
                           )
                         );
                       },),
                       OutletFuncItem(title: "MUTASI", onPress: (){
                         Navigator.push(
                           context, MaterialPageRoute(
-                            builder: (context) => MutasiPage()
+                            builder: (context) => MutasiPage(outletDataModel)
                           )
                         );
                       },),
                       OutletFuncItem(title: "KURS", onPress: (){
                         Navigator.push(
                           context, MaterialPageRoute(
-                            builder: (context) => KursPage()
+                            builder: (context) => KursPage(outletDataModel)
                           )
                         );
                       },),
@@ -161,7 +164,7 @@ class OutletItem extends StatelessWidget {
                       Row(
                         children: [
                           Text(
-                            "Jumlah Berenang",
+                            "Jumlah Barang",
                             style: robototext.copyWith(
                               fontSize: 8,
                               fontWeight: bold,
@@ -188,19 +191,19 @@ class OutletItem extends StatelessWidget {
                       ),
                       OutletMoneyTotal(
                         title: "IDR",
-                        total: 100000000,
+                        total: prices[0].money,
                       ),
                       OutletMoneyTotal(
                         title: "USD",
-                        total: 2000,
+                        total: prices[1].money,
                       ),
                       OutletMoneyTotal(
                         title: "EUR",
-                        total: 200,
+                        total: prices[2].money,
                       ),
                       OutletMoneyTotal(
                         title: "SGD",
-                        total: 1000,
+                        total: prices[3].money,
                       ),
                     ],
                   ),

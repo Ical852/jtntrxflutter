@@ -3,6 +3,7 @@
 import 'package:jtntrx/models/trxoutletmodel.dart';
 
 class TrxDataModel {
+  TrxDataModel(){}
   List<TrxOutletModel> data;
 
   TrxDataModel.fromJson(Map<String, dynamic> json) {

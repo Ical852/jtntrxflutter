@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:jtntrx/models/outletdatamodel.dart';
+import 'package:jtntrx/models/outletmodels/outletsubsmode.dart';
+import 'package:jtntrx/models/outletmodels/trxtipemode.dart';
 import 'package:jtntrx/shared/theme.dart';
 import 'package:jtntrx/widgets/btnsubmit.dart';
 import 'package:jtntrx/widgets/header.dart';
@@ -13,6 +16,8 @@ import 'package:jtntrx/widgets/outletitemname.dart';
 import 'package:jtntrx/widgets/outletnamedropdown.dart';
 
 class MutasiPage extends StatefulWidget {
+  OutletDataModel outletDataModel;
+  MutasiPage(this.outletDataModel);
 
   @override
   State<MutasiPage> createState() => _MutasiPageState();
@@ -20,15 +25,15 @@ class MutasiPage extends StatefulWidget {
 
 class _MutasiPageState extends State<MutasiPage> {
   var currentOutletName = "Nama Outlet";
+  var currentOutletId = "";
   var dropdownOpened = false;
-  List<String> outletnames = ["Nama Outlet", "Nama Outlet 1", "Nama Outlet 2","Nama Outlet 3","Nama Outlet 4"];
 
   var dropdownJL = false;
   var date1 = DateTime.now();
 
   var currentJenisLaporan = "Jenis Laporan";
+  var currentJenisLaporanId = "";
   var openJenisLaporan = false;
-  List<String> Jlames = ["Jenis Laporan", "Jenis Laporan 1", "Jenis Laporan 2","Jenis Laporan 3","Jenis Laporan 4"];
 
   var moneyType = "IDR";
   var moneyTypeOpen = false;
@@ -48,6 +53,9 @@ class _MutasiPageState extends State<MutasiPage> {
 
   @override
   Widget build(BuildContext context) {
+    List<OutletSubsModel> outletnames = this.widget.outletDataModel.outlet_subs;
+    List<TrxTipeModel> Jlames = this.widget.outletDataModel.trx_tipe;
+
     Widget contentBg() {
       return Container(
         margin: EdgeInsets.only(
@@ -99,11 +107,12 @@ class _MutasiPageState extends State<MutasiPage> {
       return OutletNameDropwdown(
         child: Column(
           children: outletnames.map((item) => OutletItemName(
-            title: item,
+            title: item.outletName,
             onPress: () {
               this.setState(() {
                 dropdownOpened = !dropdownOpened;
-                currentOutletName = item;
+                currentOutletName = item.outletName;
+                currentOutletId = item.id;
               });
             },
           ),
@@ -116,11 +125,12 @@ class _MutasiPageState extends State<MutasiPage> {
       return OutletNameDropwdown(
         child: Column(
           children: Jlames.map((item) => OutletItemName(
-            title: item,
+            title: item.nama,
             onPress: () {
               this.setState(() {
                 openJenisLaporan = !openJenisLaporan;
-                currentJenisLaporan = item;
+                currentJenisLaporan = item.nama;
+                currentJenisLaporanId = item.id;
               });
             },
           ),

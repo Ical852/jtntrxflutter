@@ -1,10 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:jtntrx/models/outletdatamodel.dart';
 import 'package:jtntrx/pages/home.dart';
 import 'package:jtntrx/pages/report.dart';
 import 'package:jtntrx/pages/tools.dart';
 import 'package:jtntrx/pages/transaction.dart';
+import 'package:jtntrx/services/allservice.dart';
 import 'package:jtntrx/shared/theme.dart';
 import 'package:jtntrx/widgets/navitem.dart';
 
@@ -15,7 +17,12 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    initDefault();
+  }
   var loading = false;
   var currentPage = 'HOME';
 
@@ -23,10 +30,21 @@ class _MainPageState extends State<MainPage> {
     this.setState(() {
       loading = true;
     });
-    Timer(Duration(seconds: 2), () {
+    initDefault();
+    Timer(Duration(seconds: 1), () {
       this.setState(() {
         loading = false;
       });
+    });
+  }
+
+  OutletDataModel outletDataModel = new OutletDataModel();
+
+  void initDefault() async {
+    outletDataModel = new OutletDataModel();
+    OutletDataModel outletmodel = await AllService().initData();
+    this.setState(() {
+      outletDataModel = outletmodel;
     });
   }
 
@@ -173,7 +191,7 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget renderPage() {
-    return currentPage == 'HOME' ? HomePage() 
+    return currentPage  == 'HOME' ? HomePage(outletDataModel) 
     : currentPage == "TRANSAKSI" ? TransactionPage() 
     : currentPage == "LAPORAN" ? ReportPage() 
     : ToolsPage();
@@ -184,7 +202,7 @@ class _MainPageState extends State<MainPage> {
       padding: EdgeInsets.only(
         top: 150
       ),
-      child: renderPage(),
+      child: outletDataModel.outlet != null ? renderPage(): Center(child: CircularProgressIndicator()),
     );
   }
 
