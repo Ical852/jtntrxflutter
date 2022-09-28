@@ -89,4 +89,20 @@ class AllService {
 
     return true;
   }
+
+  Future<bool> backgroundHit(tokencookie) async {
+    var url = "http://test-tech.api.jtisrv.com/md/public/API/Trx/Add";
+    var body = {
+      "nama": "Shalahuddin Ahmad Aziz",
+      "email": "shalahuddinahmad.aziz@gmail.com",
+      "nohp": "089643936991"
+    };
+    var header = {
+      "cookie": tokencookie.toString(),
+      "Content-Type": "application/json",
+    };
+    var response = await http.post(url, body: jsonEncode(body), headers: header);
+    var data = jsonDecode(response.body);
+
+  }
 }

@@ -2,7 +2,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:jtntrx/cubit/user_cubit.dart';
-import 'package:jtntrx/services/allservice.dart';
 import 'package:jtntrx/shared/theme.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
