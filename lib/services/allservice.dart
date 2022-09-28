@@ -11,6 +11,7 @@ class AllService {
   String tokencsrf;
 
   Future<UserModel> login() async {
+    print("loggin in");
     var url = "http://test-tech.api.jtisrv.com/md/public/API/Auth";
     var body = 
       {
@@ -28,6 +29,7 @@ class AllService {
     var cookie = response.headers['set-cookie'];
     var cookietoken = cookie.split(';');
     token = cookietoken[0];
+
 
     var user = UserModel.fromJson(data);
     user.user_id = token;
@@ -72,5 +74,19 @@ class AllService {
     TrxDataModel outletData = TrxDataModel.fromJson(data);
 
     return outletData;
+  }
+
+  Future<bool> addTrx(dataBody, tokencookie) async {
+    var url = "http://test-tech.api.jtisrv.com/md/public/API/Trx/Add";
+    var body = dataBody;
+    var header = {
+      "cookie" : tokencookie.toString(),
+      "Content-Type": "application/json",
+    };
+
+    var response = await http.post(url, body: jsonEncode(body), headers: header);
+    var data = jsonDecode(response.body);
+
+    return true;
   }
 }

@@ -10,7 +10,8 @@ import 'package:jtntrx/widgets/outletitem.dart';
 
 class HomePage extends StatefulWidget {
   OutletDataModel outletDataModel;
-  HomePage(this.outletDataModel);
+  TrxDataModel trxDataModel;
+  HomePage(this.outletDataModel, this.trxDataModel);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -24,6 +25,12 @@ class _HomePageState extends State<HomePage> {
   var usdTotal = 0;
   var eurTotal = 0;
   var sgdTotal = 0;
+
+  var idrkeluar = 0;
+  var usdkeluar = 0;
+  var eurkeluar = 0;
+  var sgdkeluar = 0;
+
   var jumlahBarang = 0;
 
   TrxDataModel outletTrx = new TrxDataModel();
@@ -31,17 +38,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    var state = BlocProvider.of<UserCubit>(context).state;
-    if (state is UserSuccess) {
-      initdata(state.user.user_id);
+    if (this.widget.trxDataModel.data != null) {
+      this.setState(() {
+        outletTrx = this.widget.trxDataModel;
+      });
     }
+    initdata();
   }
   
-  void initdata(cookie) async {
-    TrxDataModel outletTrxmodel = await AllService().getTrx(cookie);
-    this.setState(() {
-      outletTrx = outletTrxmodel;
-    });
+  void initdata() async {
     if (outletTrx.data != null) {
       this.setState(() {
         jumlahBarang = outletTrx.data.length;
@@ -49,21 +54,46 @@ class _HomePageState extends State<HomePage> {
       if (outletTrx.data.length > 0) {
         for (var i = 0; i < outletTrx.data.length; i++) {
           if (outletTrx.data[i].trxCurtipeVar == "Rp") {
-            this.setState(() {
-              idrTotal = idrTotal + int.parse(outletTrx.data[i].trxNominal);
-            });
+            if (outletTrx.data[i].trxPtipeNama == "Masuk") {
+              this.setState(() {
+                idrTotal = idrTotal + int.parse(outletTrx.data[i].trxNominal);
+              });
+            } else {
+              this.setState(() {
+                idrkeluar = idrkeluar + int.parse(outletTrx.data[i].trxNominal);
+              });
+            }
           } else if (outletTrx.data[i].trxCurtipeVar == "\$") {
-            this.setState(() {
-              usdTotal = usdTotal + int.parse(outletTrx.data[i].trxNominal);
-            });
+            if (outletTrx.data[i].trxPtipeNama == "Masuk") {
+              this.setState(() {
+                usdTotal = usdTotal + int.parse(outletTrx.data[i].trxNominal);
+              });
+            } else {
+              this.setState(() {
+                usdkeluar = usdkeluar + int.parse(outletTrx.data[i].trxNominal);
+              });
+            }
           } else if (outletTrx.data[i].trxCurtipeVar == "S\$") {
-            this.setState(() {
-              sgdTotal = sgdTotal + int.parse(outletTrx.data[i].trxNominal);
-            });
+            if (outletTrx.data[i].trxPtipeNama == "Masuk") {
+              this.setState(() {
+                sgdTotal = sgdTotal + int.parse(outletTrx.data[i].trxNominal);
+              });
+            } else {
+              this.setState(() {
+                sgdkeluar = sgdkeluar + int.parse(outletTrx.data[i].trxNominal);
+              });
+            }
           } else {
-            this.setState(() {
-              eurTotal = eurTotal + int.parse(outletTrx.data[i].trxNominal);
-            });
+            if (outletTrx.data[i].trxPtipeNama == "Masuk") {
+              this.setState(() {
+                eurTotal = eurTotal + int.parse(outletTrx.data[i].trxNominal);
+              });
+            } else {
+              this.setState(() {
+                eurkeluar = eurkeluar + int.parse(outletTrx.data[i].trxNominal);
+              });
+            }
+            
           }
         }
       }
@@ -72,7 +102,7 @@ class _HomePageState extends State<HomePage> {
     for (var i = 0; i < 4; i++) {
       moneys.add(OutletMoneyModel.make(
         i == 0 ? "IDR" : i == 1 ? "USD" : i == 2 ? "EUR" : "SGD", 
-        i == 0 ? idrTotal : i == 1 ? usdTotal : i == 2 ? eurTotal : sgdTotal
+        i == 0 ? idrTotal - idrkeluar : i == 1 ? usdTotal - usdkeluar : i == 2 ? eurTotal - eurkeluar : sgdTotal - sgdkeluar
       ));
     }
   }

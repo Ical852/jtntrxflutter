@@ -1,7 +1,10 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jtntrx/cubit/trx_cubit.dart';
+import 'package:jtntrx/cubit/user_cubit.dart';
 import 'package:jtntrx/models/outletdatamodel.dart';
+import 'package:jtntrx/models/trxdatamodel.dart';
 import 'package:jtntrx/pages/home.dart';
 import 'package:jtntrx/pages/report.dart';
 import 'package:jtntrx/pages/tools.dart';
@@ -19,9 +22,14 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     initDefault();
+    var state = BlocProvider.of<UserCubit>(context).state;
+    var trxstate = BlocProvider.of<TrxCubit>(context).state;
+    if (state is UserSuccess) {
+      initdata(state.user.user_id);
+      context.read<TrxCubit>().getTrx(state.user.user_id);
+    }
   }
   var loading = false;
   var currentPage = 'HOME';
@@ -31,6 +39,10 @@ class _MainPageState extends State<MainPage> {
       loading = true;
     });
     initDefault();
+    var state = BlocProvider.of<UserCubit>(context).state;
+    if (state is UserSuccess) {
+      initdata(state.user.user_id);
+    }
     Timer(Duration(seconds: 1), () {
       this.setState(() {
         loading = false;
@@ -38,6 +50,7 @@ class _MainPageState extends State<MainPage> {
     });
   }
 
+  TrxDataModel outletTrx = new TrxDataModel();
   OutletDataModel outletDataModel = new OutletDataModel();
 
   void initDefault() async {
@@ -45,6 +58,13 @@ class _MainPageState extends State<MainPage> {
     OutletDataModel outletmodel = await AllService().initData();
     this.setState(() {
       outletDataModel = outletmodel;
+    });
+  }
+
+  void initdata(cookie) async {
+    TrxDataModel outletTrxmodel = await AllService().getTrx(cookie);
+    this.setState(() {
+      outletTrx = outletTrxmodel;
     });
   }
 
@@ -191,8 +211,8 @@ class _MainPageState extends State<MainPage> {
   }
 
   Widget renderPage() {
-    return currentPage  == 'HOME' ? HomePage(outletDataModel) 
-    : currentPage == "TRANSAKSI" ? TransactionPage() 
+    return currentPage  == 'HOME' ? HomePage(outletDataModel, outletTrx) 
+    : currentPage == "TRANSAKSI" ? TransactionPage(outletTrx) 
     : currentPage == "LAPORAN" ? ReportPage() 
     : ToolsPage();
   }
@@ -202,7 +222,7 @@ class _MainPageState extends State<MainPage> {
       padding: EdgeInsets.only(
         top: 150
       ),
-      child: outletDataModel.outlet != null ? renderPage(): Center(child: CircularProgressIndicator()),
+      child: outletDataModel.outlet != null && outletTrx.data != null ? renderPage(): Center(child: CircularProgressIndicator()),
     );
   }
 

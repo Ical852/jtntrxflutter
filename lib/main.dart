@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jtntrx/cubit/trx_cubit.dart';
 import 'package:jtntrx/cubit/user_cubit.dart';
 import 'package:jtntrx/pages/main.dart';
 import 'package:jtntrx/pages/splash.dart';
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => UserCubit())
+        BlocProvider(create: (context) => UserCubit()),
+        BlocProvider(create: (context) => TrxCubit())
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
