@@ -1,4 +1,3 @@
-//@dart=2.9
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
@@ -54,17 +53,15 @@ class _PindahPageState extends State<PindahPage> {
 
   var loading = false;
 
-  File _image = null;
-  File _image2 = null;
-  File _image3 = null;
-  File _image4 = null;
+  File? _image = null;
+  File? _image2 = null;
+  File? _image3 = null;
+  File? _image4 = null;
 
   Future _pickImage(ImageSource source, int type) async {
     try {
       final image = await ImagePicker.pickImage(
         source: source,
-        maxHeight: 43,
-        maxWidth: 63
       );
       if (image == null) {
         return;
@@ -137,10 +134,10 @@ class _PindahPageState extends State<PindahPage> {
           "curr_id": curtipe.toString(),
           "nominal": currencyController.text.toString(),
           "ket": ketaranganController.text.toString(),
-          "photo": _image != null ? base64Encode(_image.readAsBytesSync()) : "",
-          "photo2": _image2 != null ? base64Encode(_image2.readAsBytesSync()) : "",
-          "photo3": _image3 != null ? base64Encode(_image3.readAsBytesSync()) : "",
-          "photo4": _image4 != null ? base64Encode(_image4.readAsBytesSync()) : "",
+          "photo": _image != null ? base64Encode(_image!.readAsBytesSync()) : "",
+          "photo2": _image2 != null ? base64Encode(_image2!.readAsBytesSync()) : "",
+          "photo3": _image3 != null ? base64Encode(_image3!.readAsBytesSync()) : "",
+          "photo4": _image4 != null ? base64Encode(_image4!.readAsBytesSync()) : "",
           "outlet_id1": currentOutletId,
           "outlet_id2": currentOutletId2,
           "tgl": dateController.text.toString()
@@ -178,7 +175,7 @@ class _PindahPageState extends State<PindahPage> {
               title: "Start Date",
               hint: "masukkan start date...",
               onTap: () async {
-                DateTime newDate = await showDatePicker(
+                DateTime? newDate = await showDatePicker(
                   context: context, 
                   initialDate: currentDate, 
                   firstDate: DateTime(1900), 
@@ -222,10 +219,10 @@ class _PindahPageState extends State<PindahPage> {
               onLast: () {
                 _pickImage(ImageSource.gallery, 4);
               },
-              img1: _image,
-              img2: _image2,
-              img3: _image3,
-              img4: _image4,
+              img1: _image!,
+              img2: _image2!,
+              img3: _image3!,
+              img4: _image4!,
             ),
             SizedBox(height: 13,),
             InputNormal(

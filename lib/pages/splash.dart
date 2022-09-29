@@ -13,7 +13,6 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     context.read<UserCubit>().login();
   }
@@ -23,7 +22,9 @@ class _SplashPageState extends State<SplashPage> {
     return BlocConsumer<UserCubit, UserState>(
       listener: (context, state) {
         if (state is UserSuccess) {
-          Navigator.pushNamed(context, "/main");
+          Timer(Duration(seconds: 2), () {
+            Navigator.pushNamed(context, "/main");
+          });
         }
       },
       builder: (context, state) {

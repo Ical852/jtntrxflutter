@@ -61,8 +61,6 @@ class _KeluarPageState extends State<KeluarPage> {
     try {
       final image = await ImagePicker.pickImage(
         source: source,
-        maxHeight: 43,
-        maxWidth: 63
       );
       if (image == null) {
         return;
