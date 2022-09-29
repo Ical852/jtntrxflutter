@@ -59,19 +59,20 @@ class _KeluarPageState extends State<KeluarPage> {
 
   Future _pickImage(ImageSource source, int type) async {
     try {
-      final image = await ImagePicker.pickImage(
+      PickedFile image = await ImagePicker().getImage(
         source: source,
       );
       if (image == null) {
+        showAlert("danger", "image null");
         return;
       }
       File img = File(image.path);
-      setState(() {
+      this.setState(() {
         type == 1 ? _image = img : type == 2 ?_image2 = img : type == 3 ? _image3 = img : _image4 = img;
       });
-      print(image);
+      showAlert("success", img.toString());
     } on PlatformException catch (e) {
-      print(e);
+      showAlert("success", e);
     }
   }
 
