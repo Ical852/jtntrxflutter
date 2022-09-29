@@ -67,6 +67,23 @@ class _TransactionPageState extends State<TransactionPage> {
       }
   }
 
+  void deleteTrx(id) async {
+    var data = {
+      "act": "trxDel",
+      "outlet_id": 1,
+      "user_id": 1,
+      "data": {
+        "trx_id": id
+      }
+    };
+    var state = BlocProvider.of<UserCubit>(context).state;
+    if (state is UserSuccess) {
+      await AllService().delTrx(data, state.user.user_id);
+    }
+    showAlert("success", "Hapus data transaksi berhasil");
+    refresh();
+  }
+
   void filterData() {
     if (searchController.text.toString() == "") {
      refresh();
@@ -227,7 +244,59 @@ class _TransactionPageState extends State<TransactionPage> {
                 child: SingleChildScrollView(
                   child: Column(
                     children: filtered.data.map((trx) => 
-                      TrixItems(trxdata: trx,)
+                      TrixItems(trxdata: trx,onPress: (){
+                        showDialog(
+                          context: context, 
+                          builder: (context) => 
+                          AlertDialog(
+                            title: Text(
+                              "Actions",
+                              style: robototext.copyWith(
+                                fontSize: 14,
+                                fontWeight: semiBold,
+                                color: primaryColor
+                              ),
+                            ),
+                            content: Text(
+                              "Delete Transactions ?",
+                              style: robototext.copyWith(
+                                fontSize: 14,
+                                fontWeight: regular,
+                                color: grey
+                              ),
+                            ),
+                            actions: [
+                              FlatButton(
+                                onPressed: (){
+                                  deleteTrx(trx.trxId);
+                                  Navigator.pop(context, true);
+                                }, 
+                                child: Text(
+                                  "Yes",
+                                  style: robototext.copyWith(
+                                    fontSize: 14,
+                                    fontWeight: semiBold,
+                                    color: primaryColor
+                                  ),
+                                ),
+                              ),
+                              FlatButton(
+                                onPressed: (){
+                                  Navigator.pop(context, true);
+                                }, 
+                                child: Text(
+                                  "No",
+                                  style: robototext.copyWith(
+                                    fontSize: 14,
+                                    fontWeight: semiBold,
+                                    color: primaryColor
+                                  ),
+                                ),
+                              )
+                            ],
+                          )
+                        );
+                      },)
                     ).toList(),
                   ),
                 ),

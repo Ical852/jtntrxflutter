@@ -63,13 +63,13 @@ class _KeluarPageState extends State<KeluarPage> {
         source: source,
       );
       if (image == null) {
-        showAlert("danger", "image null");
+        showAlert("danger", "Silakan Pilih Gambar");
         return;
       }
       File img = File(image.path);
       this.setState(() {
         type == 1 ? _image = img : type == 2 ?_image2 = img : type == 3 ? _image3 = img : _image4 = img;
-      });
+      }); 
       showAlert("success", img.toString());
     } on PlatformException catch (e) {
       showAlert("success", e);
@@ -120,10 +120,8 @@ class _KeluarPageState extends State<KeluarPage> {
       showAlert("danger", "Isi Judul terlebih dahulu");
     } else if (currencyController.text.toString() == "") {
       showAlert("danger", "Isi Nominal terlebih dahulu");
-    } else if (_image == null) {
-      showAlert("danger", "Isi Bukti photo minimal 1");
     } else if (ketaranganController.text.toString() == "") {
-      showAlert("danger", "Isi Keterangan terlebih dahulu 1");
+      showAlert("danger", "Isi Keterangan terlebih dahulu");
     } else {
       var data = {
         "act": "trxAdd",

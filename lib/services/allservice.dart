@@ -90,6 +90,20 @@ class AllService {
     return true;
   }
 
+  Future<bool> delTrx(dataBody, tokencookie) async {
+    var url = "http://test-tech.api.jtisrv.com/md/public/API/Trx/Del";
+    var body = dataBody;
+    var header = {
+      "cookie" : tokencookie.toString(),
+      "Content-Type": "application/json",
+    };
+
+    var response = await http.post(url, body: jsonEncode(body), headers: header);
+    var data = jsonDecode(response.body);
+
+    return true;
+  }
+
   Future<bool> backgroundHit(tokencookie) async {
     var url = "http://test-tech.api.jtisrv.com/md/public/API/Trx/Add";
     var body = {

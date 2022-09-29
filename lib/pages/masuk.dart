@@ -60,10 +60,10 @@ class _MasukPageState extends State<MasukPage> {
   Future _pickImage(ImageSource source, int type) async {
     try {
       PickedFile image = await ImagePicker().getImage(
-        source: source,
+        source: ImageSource.gallery,
       );
       if (image == null) {
-        showAlert("danger", "image null");
+        showAlert("danger", "Silakan Pilih Gambar");
         return;
       }
       File img = File(image.path);
@@ -118,10 +118,8 @@ class _MasukPageState extends State<MasukPage> {
       showAlert("danger", "Isi Start date terlebih dahulu");
     } else if (currencyController.text.toString() == "") {
       showAlert("danger", "Isi Nominal terlebih dahulu");
-    } else if (_image == null) {
-      showAlert("danger", "Isi Bukti photo minimal 1");
     } else if (keteranganController.text.toString() == "") {
-      showAlert("danger", "Isi Keterangan terlebih dahulu 1");
+      showAlert("danger", "Isi Keterangan terlebih dahulu");
     } else {
       var data = {
         "act": "trxAdd",

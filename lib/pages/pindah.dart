@@ -65,7 +65,7 @@ class _PindahPageState extends State<PindahPage> {
         source: source,
       );
       if (image == null) {
-        showAlert("danger", "image null");
+        showAlert("danger", "Silakan Pilih Gambar");
         return;
       }
       File img = File(image.path);
@@ -122,10 +122,8 @@ class _PindahPageState extends State<PindahPage> {
       showAlert("danger", "Isi Start date terlebih dahulu");
     } else if (currencyController.text.toString() == "") {
       showAlert("danger", "Isi Nominal terlebih dahulu");
-    } else if (_image == null) {
-      showAlert("danger", "Isi Bukti photo minimal 1");
     } else if (ketaranganController.text.toString() == "") {
-      showAlert("danger", "Isi Keterangan terlebih dahulu 1");
+      showAlert("danger", "Isi Keterangan terlebih dahulu");
     } else {
       var data = {
         "act": "trxAdd",
